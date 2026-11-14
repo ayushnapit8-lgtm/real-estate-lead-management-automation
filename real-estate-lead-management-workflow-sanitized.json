@@ -1,0 +1,580 @@
+{
+  "name": "Real Estate Lead Management Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Real Estate Property Enquiry",
+        "formDescription": "Submit your requirements and our team will contact you.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Customer Name "
+            },
+            {
+              "fieldLabel": "Phone Number "
+            },
+            {
+              "fieldLabel": "email Address ",
+              "fieldType": "email"
+            },
+            {
+              "fieldLabel": "Property Type ",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Apartment"
+                  },
+                  {
+                    "option": "villa"
+                  },
+                  {
+                    "option": "plots"
+                  },
+                  {
+                    "option": "Commercial"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Budget (INR)",
+              "fieldType": "number"
+            },
+            {
+              "fieldLabel": "Preferred Location "
+            },
+            {
+              "fieldLabel": "Buying Timeline ",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Immediately"
+                  },
+                  {
+                    "option": "Within 1 Month"
+                  },
+                  {
+                    "option": "1-3 Months "
+                  },
+                  {
+                    "option": "3-6 Months "
+                  },
+                  {
+                    "option": "Just Exploring "
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "755b7e07-34a4-4c99-97d2-a5da0eb68f3b",
+      "name": "Customers Enquiry ",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        0,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2ab8cfa0-61de-4aa5-b11e-99d4e3b2db77",
+              "name": "customer_name",
+              "value": "={{ $json[\"Customer Name \"]}}",
+              "type": "string"
+            },
+            {
+              "id": "cd220f5f-f345-40b8-9ee5-fb3491e4973f",
+              "name": "phone",
+              "value": "={{ $json[\"Phone Number \"] }}",
+              "type": "string"
+            },
+            {
+              "id": "bc3b1d16-db90-4e65-91bb-01c77c63e32c",
+              "name": "email Address ",
+              "value": "={{ $json[\"email Address \"] }}",
+              "type": "string"
+            },
+            {
+              "id": "9d1d4e3b-1ee6-4764-861a-013303f517ca",
+              "name": "Property Type ",
+              "value": "={{ $json[\"Property Type \"] }}",
+              "type": "string"
+            },
+            {
+              "id": "e8606ab0-7ae3-4a11-b53a-b00d4807131a",
+              "name": "Budget (INR)",
+              "value": "={{ $json[\"Budget (INR)\"] }}",
+              "type": "number"
+            },
+            {
+              "id": "10b2f56b-2c9b-49fb-a435-ba9cf1af8bb0",
+              "name": "Preferred Location ",
+              "value": "={{ $json[\"Preferred Location \"] }}",
+              "type": "string"
+            },
+            {
+              "id": "ee31ffff-c0f1-45d7-9344-6d701840577b",
+              "name": "Buying Timeline ",
+              "value": "={{ $json[\"Buying Timeline \"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7caa408a-640d-41fc-9a56-2b8b235cf797",
+      "name": "Customers Data ",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        192,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 4
+          },
+          "conditions": [
+            {
+              "id": "6b9057c2-1daa-4161-9473-60eb2dcc4b9d",
+              "leftValue": "={{ $json[\"Buying Timeline \"] }}",
+              "rightValue": "Immediately",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "064104a7-630c-4015-bfa4-257c26227e6d",
+              "leftValue": "={{ $json['Buying Timeline '] }}",
+              "rightValue": "Within 1 Month",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "id": "03a9e62a-583a-4c8d-a5a7-42ee3f86c372",
+      "name": "If",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.4,
+      "position": [
+        480,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3a9cc2c8-e308-4022-a70e-5e76144c24b9",
+              "name": "lead_priority",
+              "value": "High ",
+              "type": "string"
+            },
+            {
+              "id": "397d9e71-88e8-418c-9283-cd73175eed9e",
+              "name": "lead_status",
+              "value": "new ",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "12697c96-71df-4b60-b537-9ce40efde2bb",
+      "name": "High Priority Lead.",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        720,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "YOUR_NOTIFICATION_EMAIL@example.com",
+        "subject": "={{ 'New High Priority Real Estate Lead - ' + $(\"High Priority Lead.\").item.json.customer_name }}",
+        "message": "=<h2>New High Priority Lead!</h2>  <p><strong>Customer:</strong> {{ $(\"High Priority Lead.\").item.json.customer_name }}</p> <p><strong>Phone:</strong> {{ $(\"High Priority Lead.\").item.json.phone }}</p> <p><strong>Email:</strong> {{ $(\"High Priority Lead.\").item.json[\"email Address \"] }}</p> <p><strong>Property Type:</strong> {{ $(\"High Priority Lead.\").item.json[\"Property Type \"] }}</p> <p><strong>Budget:</strong> ₹{{ $(\"High Priority Lead.\").item.json[\"Budget (INR)\"] }}</p> <p><strong>Preferred Location:</strong> {{ $(\"High Priority Lead.\").item.json[\"Preferred Location \"] }}</p> <p><strong>Buying Timeline:</strong> {{ $(\"High Priority Lead.\").item.json[\"Buying Timeline \"] }}</p>  <p><strong>Priority:</strong> {{ $(\"High Priority Lead.\").item.json.lead_priority }}</p>",
+        "options": {}
+      },
+      "id": "6f0e91bb-b653-456a-a801-37febe4e435a",
+      "name": "Mail Alert :",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2432,
+        64
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "661cce48-0502-4d5e-a86c-bea91f7b40b9",
+              "name": "lead_priority",
+              "value": "Normal",
+              "type": "string"
+            },
+            {
+              "id": "bf7c92d0-ecd7-4bd0-b28f-d023cb7d0bc0",
+              "name": "lead_status",
+              "value": "New",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "91f67340-7ed2-4441-9ef9-04d37d82243f",
+      "name": "Normal Priority Lead.",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        720,
+        528
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "REPLACE_WITH_YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "YOUR_GOOGLE_SHEET_NAME"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "RESELECT_YOUR_SHEET_TAB",
+          "mode": "list",
+          "cachedResultName": "YOUR_SHEET_TAB"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "lead_id": "={{ $execution.id }}",
+            "customer_name": "={{ $json.customer_name }}",
+            "phone": "={{ $json.phone }}",
+            "email": "={{ $json[\"email Address \"] }}",
+            "property_type": "={{ $json[\"Property Type \"] }}",
+            "budget": "={{ $json[\"Budget (INR)\"] }}",
+            "location": "={{ $json[\"Preferred Location \"] }}",
+            "buying_timeline": "={{ $json[\"Buying Timeline \"] }}",
+            "lead_priority": "={{ $json.lead_priority }}",
+            "lead_status": "={{ $json.lead_status }}",
+            "created_at": "={{ $now.toISO() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "lead_id",
+              "displayName": "lead_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "customer_name",
+              "displayName": "customer_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "property_type",
+              "displayName": "property_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "budget",
+              "displayName": "budget",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "location",
+              "displayName": "location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "buying_timeline",
+              "displayName": "buying_timeline",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "lead_priority",
+              "displayName": "lead_priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "lead_status",
+              "displayName": "lead_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "e93197cd-2cc4-4614-b07a-44402704f3bf",
+      "name": "Leads CRM Database",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1072,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        2080,
+        -48
+      ],
+      "id": "9f7a96b5-1bd4-4853-bca5-2da469e7f434",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ JSON.stringify($json) }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=You are an expert real estate lead qualification assistant.  Analyze the following lead information:  Customer Name: {{ $json.customer_name }} Phone: {{ $json.phone }} Email: {{ $json.email }} Property Type: {{ $json.property_type }} Budget: {{ $json.budget }} Location: {{ $json.location }} Buying Timeline: {{ $json.buying_timeline }} Lead Priority: {{ $json.lead_priority }}  Provide the following four fields:  1. Lead Summary: A concise summary of the customer's requirements. 2. Buying Intent: Classify as High, Medium, or Low and explain briefly. 3. Next Action: Recommend the best action for the sales team. 4. Reason: Explain why this lead has this buying intent.  Return a clear, structured response using these four headings. Do not invent missing information."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        1520,
+        384
+      ],
+      "id": "006668b5-c7dc-4d98-8f3c-444ae1d48cf2",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": "qwen2.5:3b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        1104,
+        640
+      ],
+      "id": "610de123-f638-4253-a430-de02cdcc0573",
+      "name": "Ollama Chat Model"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Customers Enquiry ": {
+      "main": [
+        [
+          {
+            "node": "Customers Data ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Customers Data ": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "High Priority Lead.",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Normal Priority Lead.",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "High Priority Lead.": {
+      "main": [
+        [
+          {
+            "node": "Leads CRM Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normal Priority Lead.": {
+      "main": [
+        [
+          {
+            "node": "Leads CRM Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leads CRM Database": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Mail Alert :",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "meta": {},
+  "nodeGroups": [],
+  "tags": []
+}
